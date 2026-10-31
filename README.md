@@ -37,12 +37,12 @@ Tab or Esc leaves Edit Perspective. Each edit is one undo step.
 
 ## Modes
 
-| Mode | Use it for | What is solved |
+| Mode | Use it for | What it does |
 |---|---|---|
-| **2 Points** | most photos: two horizontal directions, or one horizontal and the verticals | rotation, focal length |
-| **3 Points** | strong vertical convergence (looking up or down at buildings) | rotation, focal length, lens shift |
-| **Parallel Verticals** | photos and renders with corrected verticals: shot with a shift / tilt-shift lens, straightened in an editor, or rendered with a level camera and shift | heading, focal length, Shift Y; the camera is level (Rotation X 90°, Y 0°) |
-| **1 Point** | corridors, streets: one vanishing point | rotation; the focal length is the camera's own |
+| **2 Points** | most photos: two horizontal directions, or one horizontal and the verticals | two vanishing points give the rotation and the focal length |
+| **3 Points** | strong vertical convergence (looking up or down at buildings) | three vanishing points give the rotation, the focal length and the shift |
+| **Parallel Verticals** | photos and renders with corrected verticals: shot with a shift / tilt-shift lens, straightened in an editor, or rendered with shift instead of tilting the camera | no tilt or roll (Rotation X 90°, Y 0°), so vertical lines stay vertical; the X and Y lines give the turn left / right, the focal length and Shift Y |
+| **1 Point** | corridors, streets: one vanishing point | one vanishing point turns the camera; the focal length is kept |
 
 ## Features
 

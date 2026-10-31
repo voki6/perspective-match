@@ -38,9 +38,9 @@ points, the camera is solved from them and updates live while you drag.
 * **2 Points** – two vanishing points; focal length and rotation are solved.
 * **3 Points** – three vanishing points; lens shift is solved as well.
 * **Parallel Verticals** – for photos and renders with corrected verticals
-  (a shift / tilt-shift lens, perspective correction in an editor, a level
-  render camera with shift): a level camera (Rotation X 90°, Y 0°), verticals
-  stay parallel and Shift Y does the framing.
+  (a shift / tilt-shift lens, perspective correction in an editor, a render
+  with shift instead of a tilted camera): no tilt or roll (Rotation X 90°,
+  Y 0°), vertical lines stay vertical and Shift Y does the framing.
 * **1 Point** – one vanishing point with the camera's own focal length.
 
 **Editing feels like Blender**
