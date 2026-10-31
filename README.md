@@ -41,7 +41,7 @@ Tab or Esc leaves Edit Perspective. Each edit is one undo step.
 |---|---|---|
 | **2 Points** | most photos: two horizontal directions, or one horizontal and the verticals | rotation, focal length |
 | **3 Points** | strong vertical convergence (looking up or down at buildings) | rotation, focal length, lens shift |
-| **Parallel Verticals** | architectural photos with straight verticals | heading, focal length, Shift Y; the camera is level (Rotation X 90°, Y 0°) |
+| **Parallel Verticals** | photos and renders with corrected verticals: shot with a shift / tilt-shift lens, straightened in an editor, or rendered with a level camera and shift | heading, focal length, Shift Y; the camera is level (Rotation X 90°, Y 0°) |
 | **1 Point** | corridors, streets: one vanishing point | rotation; the focal length is the camera's own |
 
 ## Features
