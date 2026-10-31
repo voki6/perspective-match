@@ -347,10 +347,12 @@ def sync_lines_from_camera(cam_obj, scene, axes=None, origin=True):
         _write_origin(pm, st)
     _write_scale_end(pm, st)
     remember(cam_obj, scene)
-    # the errors are gone only when the lines the mode solves from now agree
-    # with the camera (not when e.g. only the origin point followed it)
+    # the lines the mode solves from were re-aimed: find out whether the mode
+    # can solve them now (a camera left by a failed mode switch may not fit
+    # the mode); when only e.g. the origin point followed, the errors stay
     if set(M.used_axes(tool.mode, tool.vp1_axis, tool.vp2_axis)) <= set(axes):
         forget_errors(cam_obj)
+        check_lines(cam_obj, scene)
     changed()
 
 
@@ -370,7 +372,8 @@ def solve_lines(cam_obj, scene, cur, pp=None, origin_moved=False, reset_shift=Fa
 def check_lines(cam_obj, scene):
     """Find the errors of the lines as they are, writing nothing: after a load
     or an undo they are not known (errors are runtime only), and lines saved
-    while impossible must show their error before they are touched."""
+    while impossible must show their error before they are touched; after the
+    lines followed a camera changed by hand, the mode may still not fit it."""
     _origin, res = solve_lines(cam_obj, scene, current_state(cam_obj, scene))
     msg = blender_values(cam_obj, res.state)[1] if res.ok else None
     k = key(cam_obj)

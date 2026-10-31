@@ -427,9 +427,11 @@ folder, import it as a package in background Blender and run
 * Keys sent by remote desktop control arrive in Blender with an empty type;
   keyboard paths are tested through `EditCore` with fake events.
 * The status bar updates only when `status_text_set` is called again.
-* Errors are forgotten by `camera.sync_lines_from_camera` only when it re-aimed
-  every axis the mode solves from; Reset Camera Position (origin point only)
-  must not hide the error of impossible lines.
+* Errors after `camera.sync_lines_from_camera`: when it re-aimed every axis
+  the mode solves from, they are found again by `check_lines` (a solve that
+  writes nothing) — lines that agree with a camera left by a failed mode
+  switch may still not fit the mode (Parallel Verticals and a rolled camera);
+  otherwise (Reset Camera Position: origin point only) they stay.
 * Undo / redo / load: the file's lines and camera agree, nothing is re-aimed.
   `camera._on_reload` drops signatures, errors and selection; the first
   depsgraph update takes the signature again (`follow_camera`, first look)

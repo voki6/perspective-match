@@ -420,6 +420,25 @@ def run():
         tool.directions = 'XY'
         update(scene)
 
+        # a mode switch that cannot solve (a camera rolled 30 degrees cannot be
+        # level with these lines) keeps its error when the camera is then moved
+        # by hand: the lines follow it, but the mode still cannot solve them
+        base = cam.matrix_world.copy()
+        cam.matrix_world = base @ mathutils.Matrix.Rotation(math.radians(30), 4, 'Z')
+        update(scene)
+        tool.mode = 'VERTICALS'
+        failed = bool(MOD.state.errors.get(CAM.key(cam)))
+        cam.location.x += 0.3
+        update(scene)
+        shown = bool(MOD.state.errors.get(CAM.key(cam)))
+        checks['hand_change_keeps_mode_error'] = (failed and shown
+                                                  and not CAM.solve_and_apply(cam, scene).ok)
+        tool.mode = 'TWO_VP'
+        cam.matrix_world = base
+        update(scene)
+        CAM.solve_and_apply(cam, scene)
+        update(scene)
+
         # every mode: first touch does not jump (VERTICALS only if no tilt)
         jumps = {}
         for mode in ('TWO_VP', 'ONE_VP', 'THIRD_VP'):
