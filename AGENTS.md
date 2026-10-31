@@ -260,7 +260,7 @@ through on a real ultra-wide photo; 0.05 is kept (refuse rather than be wrong).
 |---|---|
 | `__init__.py` | registers modules in order: props, camera, overlay, interact, ops, ui |
 | `blender_manifest.toml` | extension manifest (id `perspective_match`, permission `files`, build excludes) |
-| `LICENSE` | GPL-3.0 text (shipped in the package) |
+| `LICENSE` | GPL-3.0 text (shipped in the package; an identical copy in the repository root lets GitHub show the license) |
 | `solver.py` | fSpy port: vanishing points (2+ lines, least squares), focal length, rotation, principal point modes (`CENTER`, `MANUAL`, `THIRD_VP`, `VERTICALS` — fSpy style, kept for parity tests, `LEVEL`), Blender camera mapping. No bpy. |
 | `model.py` | No bpy. `CamState` (aspect, f, pp, R world→camera, C), Blender ↔ state, `retarget_segment`, `build_segments` (box edges at the world origin, middle 60 %), `solve_lines`, `orient_axes`, `place_camera` / `place_camera_in_view`, scale (`scale_measure`, `scale_tip`, `apply_scale`), `signatures_equal` |
 | `props.py` | `PM_Segment`, `PM_CameraLines` (on Camera data), `PM_ToolSettings` (on Scene) with update callbacks |

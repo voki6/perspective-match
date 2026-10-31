@@ -98,4 +98,4 @@ is also the entry point for AI coding assistants), [`docs/DESIGN.md`](docs/DESIG
 
 ## License
 
-GPL-3.0-or-later. See [`perspective_match/LICENSE`](perspective_match/LICENSE).
+GPL-3.0-or-later. See [`LICENSE`](LICENSE).
