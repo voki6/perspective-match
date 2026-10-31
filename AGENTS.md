@@ -326,7 +326,13 @@ process. The scripts load the add-on themselves from the project folder (via
 `blender_edit_core.py` and `blender_reload.py` print one line `PMRESULT{json}`
 with `passed` and `failed`; `blender_roundtrip.py` prints a dict with `passed`.
 `blender_reload.py` opens files and uses undo: background only (it refuses
-to run in an open Blender):
+to run in an open Blender). `blender_scenarios.py` (background only too) does
+random chains of user actions (drag, cancel, mode / directions / axis, camera
+by hand, lens / shift / sensor / render size, resets, extra lines, Scale,
+Detect Lines, save + reload) and checks the rules after every step; a broken
+rule is printed with the actions that led to it. Same seed = same chain
+(`PM_SEEDS`, default `1-20`; `PM_STEPS`, default 150; 100 x 200 steps take
+about 20 s):
 ```
 # once: an empty file (avoids loading the startup scene's data)
 blender -b --python-expr "import bpy; bpy.data.libraries.write('/tmp/pm_empty.blend', set())"
@@ -338,6 +344,8 @@ blender -b --factory-startup /tmp/pm_empty.blend --python-expr \
   "import runpy; runpy.run_path('tests/blender_roundtrip.py')"      # 540 camera setups
 blender -b --factory-startup /tmp/pm_empty.blend --python-expr \
   "import runpy; runpy.run_path('tests/blender_reload.py')"         # load, undo, redo
+blender -b --factory-startup /tmp/pm_empty.blend --python-expr \
+  "import runpy; runpy.run_path('tests/blender_scenarios.py')"      # random chains
 ```
 Use absolute paths if the working directory differs. On macOS `blender` is
 `/Applications/Blender.app/Contents/MacOS/Blender` (or `bpy.app.binary_path`
