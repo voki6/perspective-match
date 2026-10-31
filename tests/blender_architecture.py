@@ -278,6 +278,19 @@ def run():
         checks['reset_camera_position_no_drift'] = (
             same and (cam.matrix_world.translation - loc1).length < 1e-4)
         update(scene)
+        # impossible lines: Reset Camera Position does not touch the lines, so their
+        # error stays; it goes once the lines are fixed
+        x_good = CAM.lines_dict(pm)['X']
+        pm.x_lines[0].a, pm.x_lines[0].b = (0.1, 0.5), (0.9, 0.5)
+        pm.x_lines[1].a, pm.x_lines[1].b = (0.1, 0.6), (0.9, 0.6)     # parallel
+        failed = not CAM.solve_and_apply(cam, scene).ok
+        bpy.ops.perspective_match.reset_position()
+        update(scene)
+        kept = bool(MOD.state.errors.get(CAM.key(cam)))
+        CAM.write_lines(pm, 'X', x_good)
+        fixed = CAM.solve_and_apply(cam, scene).ok and not MOD.state.errors.get(CAM.key(cam))
+        checks['reset_position_keeps_line_errors'] = failed and kept and fixed
+        update(scene)
 
         # Scale: a known length from the origin along an axis
         def measured():

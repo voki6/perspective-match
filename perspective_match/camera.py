@@ -333,7 +333,11 @@ def sync_lines_from_camera(cam_obj, scene, axes=P.AXES, origin=True):
         _write_origin(pm, st)
     _write_scale_end(pm, st)
     remember(cam_obj, scene)
-    forget_errors(cam_obj)
+    # the errors are gone only when the lines the mode solves from now agree
+    # with the camera (not when e.g. only the origin point followed it)
+    tool = tool_of(scene)
+    if set(M.used_axes(tool.mode, tool.vp1_axis, tool.vp2_axis)) <= set(axes):
+        forget_errors(cam_obj)
     changed()
 
 

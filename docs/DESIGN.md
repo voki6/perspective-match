@@ -61,7 +61,10 @@ current design; the history of changes is in the version control log.
 * An impossible configuration (e.g. both vanishing points on one side of the
   principal point) keeps the camera in its last good state; the lines, and the
   principal point, stay where they were put, and the camera follows again as
-  soon as the configuration is valid.
+  soon as the configuration is valid. The error stays as long as the lines the
+  mode solves from do not agree with the camera: it goes with a good solve or
+  when the camera is changed by hand (that re-aims them), not when only the
+  origin point follows the camera (Reset Camera Position).
 * Lines of the axes that the mode does not use are re-aimed at the solved
   camera — except in 1 Point, which leaves them alone so they are still in
   place when switching back to another mode.
