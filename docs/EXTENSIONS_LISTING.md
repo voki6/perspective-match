@@ -1,6 +1,6 @@
 # Perspective Match — listing for extensions.blender.org
 
-Package: `dist/perspective_match-1.0.0.zip` (built with
+Package: `dist/perspective_match-1.0.1.zip` (built with
 `blender --command extension build`, checked with `extension validate`).
 
 Fields the upload form takes from the manifest: id, name, tagline, version,

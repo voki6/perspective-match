@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 
 id = "perspective_match"
-version = "1.0.0"
+version = "1.0.1"
 name = "Perspective Match"
 tagline = "Match a camera to a photo by drawing perspective lines"
 maintainer = "Kirill Volynkin"
