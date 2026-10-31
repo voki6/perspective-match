@@ -52,7 +52,8 @@ TMP = tempfile.mkdtemp(prefix='pm_scenarios_')
 BOX_PHOTO = os.path.join(HERE, 'data', 'synthetic_box.png')
 
 # Tolerances: stored coordinates are float32 (see AGENTS.md, pitfalls)
-TOL_LINE = 2e-5          # distance of a line from its vanishing point (image plane)
+TOL_LINE = 1e-4          # distance of a line from its vanishing point (image plane;
+                         # float32 ends give ~3e-5, a line not re-aimed ~1e-2)
 TOL_CAM = 1e-4           # relative camera change counted as "no change"
 # the first touch after the camera changed: line ends are float32, and with a
 # vanishing point far away (nearly parallel lines) that moves the solved camera

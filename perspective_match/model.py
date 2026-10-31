@@ -430,6 +430,21 @@ def scale_tip(state, axis, length):
     return state.project_rel(tuple(length * c for c in AXIS_VECTORS[axis]))
 
 
+def scale_end(state, axis, length, flip):
+    """(tip, flip): where the end of the known length is shown, on its side of
+    the origin (flip: the negative side). When that point is behind the camera
+    the end goes to the other side: with the origin in front of the camera,
+    the point on the side away from it is always in front too. (None, flip)
+    when the origin itself is not in front."""
+    sign = -1.0 if flip else 1.0
+    tip = scale_tip(state, axis, sign * length)
+    if tip is None:
+        other = scale_tip(state, axis, -sign * length)
+        if other is not None:
+            return other, not flip
+    return tip, flip
+
+
 def scale_measure(state, axis, tip):
     """Signed length from the world origin along `axis` to the point seen at
     `tip` (relative): the point of the axis closest to that line of sight.

@@ -134,6 +134,11 @@ current design; the history of changes is in the version control log.
 * Which side of the origin the ruler is on is stored and changes only when the
   end is dragged across the origin. Deriving it from the old end after the
   camera moved drew the Z ruler downwards after Reset Camera Position.
+  One exception: when the end of the remembered length would be behind the
+  camera (a length longer than the camera is from the origin, the axis
+  pointing towards it), the ruler goes to the other side, which is always in
+  front. Leaving the end where it was made it measure something else, and the
+  next solve moved the camera to fit it (up to absurd distances).
 * Lengths are shown in the scene's length unit, as Blender's fields do.
 
 ## Detect Lines

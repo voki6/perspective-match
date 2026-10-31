@@ -171,7 +171,10 @@ drawn size and the length is what that is now; after that the length is
 remembered, `scale_length_set`, also when typed while Scale is off); anything else
 that moves the camera (by hand, dragging the origin, Reset Camera Position —
 which keeps the distance with Scale on) → the end follows the camera
-(`camera._write_scale_end`, the length and its side of the origin stay; the
+(`camera._write_scale_end`, the length and its side of the origin stay —
+except when that point is behind the camera: then the other side, which is
+always in front, `model.scale_end`; an end left where it was measured
+something else and the next solve sent the camera far off; the
 side is stored as `scale_flip`, set whenever a solve uses the end the user
 put — never re-derived from the old end after the camera moved: a reset
 moves the origin on the photo and the old end would read as the other side,
@@ -270,7 +273,7 @@ through on a real ultra-wide photo; 0.05 is kept (refuse rather than be wrong).
 | `blender_manifest.toml` | extension manifest (id `perspective_match`, permission `files`, build excludes) |
 | `LICENSE` | GPL-3.0 text (shipped in the package; an identical copy in the repository root lets GitHub show the license) |
 | `solver.py` | fSpy port: vanishing points (2+ lines, least squares), focal length, rotation, principal point modes (`CENTER`, `MANUAL`, `THIRD_VP`, `VERTICALS` — fSpy style, kept for parity tests, `LEVEL`), Blender camera mapping. No bpy. |
-| `model.py` | No bpy. `CamState` (aspect, f, pp, R world→camera, C), Blender ↔ state, `kept_axes`, `retarget_segment`, `build_segments` (box edges at the world origin, middle 60 %), `solve_lines`, `orient_axes`, `place_camera` / `place_camera_in_view`, scale (`scale_measure`, `scale_tip`, `apply_scale`), `signatures_equal` |
+| `model.py` | No bpy. `CamState` (aspect, f, pp, R world→camera, C), Blender ↔ state, `kept_axes`, `retarget_segment`, `build_segments` (box edges at the world origin, middle 60 %), `solve_lines`, `orient_axes`, `place_camera` / `place_camera_in_view`, scale (`scale_measure`, `scale_tip`, `scale_end`, `apply_scale`), `signatures_equal` |
 | `props.py` | `PM_Segment`, `PM_CameraLines` (on Camera data), `PM_ToolSettings` (on Scene) with update callbacks |
 | `camera.py` | Bridge Blender ↔ model. `active_camera(scene, started=False)` — THE way to get the add-on's camera. `key(obj)` — key for runtime dicts (object name). `solve_and_apply`, `solve_lines` / `check_lines` (solve without writing), `sync_lines_from_camera`, `follow_camera`, `camera_picked`, `mode_switched`, photo / aspect helpers, `apply_photo_resolution`, `notify`, `override_warnings`, `one_redraw`, depsgraph / load / undo handlers |
 | `handles.py` | Handle keys: `('X'|'Y'|'Z', index, 'a'|'b')`, `('origin', 0, None)` and `('scale', 0, None)`; selection helpers (selection lives in `state.selection`) |

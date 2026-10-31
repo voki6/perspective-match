@@ -281,12 +281,18 @@ def _write_scale_end(pm, st):
     """Put the end of the known length (Scale) where this camera sees it: the
     length stays, and so does its side of the origin (scale_flip: it is kept
     as data because after a big camera change the old end on the photo may
-    be on the other side of the moved origin)."""
+    be on the other side of the moved origin) - unless that point is behind
+    the camera: then the other side (model.scale_end). An end left where it
+    was would measure something else and the next solve would move the
+    camera to make it fit."""
     if not pm.use_scale:
         return
-    sign = -1.0 if pm.scale_flip else 1.0
-    tip = M.scale_tip(st, pm.scale_axis, sign * pm.scale_length)
-    if tip is not None and tuple(pm.scale_point) != tip:
+    tip, flip = M.scale_end(st, pm.scale_axis, pm.scale_length, pm.scale_flip)
+    if tip is None:
+        return
+    if flip != pm.scale_flip:
+        pm.scale_flip = flip
+    if tuple(pm.scale_point) != tip:
         pm.scale_point = tip
 
 

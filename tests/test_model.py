@@ -249,6 +249,33 @@ def test_scale_axis_pointing_at_the_camera():
     assert new is None and 'X axis' in err
 
 
+def test_scale_end_behind_the_camera_goes_to_the_other_side():
+    """The end of a known length is always shown where it measures that length:
+    when its point is behind the camera (a length longer than the camera is
+    from the origin, the axis pointing towards the camera), on the other side."""
+    rng = random.Random(37)
+    flipped = kept = 0
+    for i in range(600):
+        st = make_state(rng, ASPECTS[i % len(ASPECTS)])
+        axis = 'XYZ'[i % 3]
+        if not M.scale_axis_usable(st, axis):
+            continue
+        flip = rng.random() < 0.5
+        length = rng.uniform(0.2, 2.0) * math.sqrt(sum(c * c for c in st.C))
+        tip, new_flip = M.scale_end(st, axis, length, flip)
+        assert tip is not None
+        s = M.scale_measure(st, axis, tip)
+        assert s is not None and abs(abs(s) - length) < 1e-9 * length, (s, length)
+        assert (s < 0.0) == new_flip
+        own_side = M.scale_tip(st, axis, (-1.0 if flip else 1.0) * length)
+        assert (new_flip != flip) == (own_side is None)
+        if new_flip != flip:
+            flipped += 1
+        else:
+            kept += 1
+    assert flipped > 30 and kept > 100, (flipped, kept)
+
+
 def test_moving_origin_moves_camera_in_its_own_plane():
     """Dragging the origin point: rotation and focal length stay, the world
     origin keeps its depth, the camera moves parallel to the image plane."""
