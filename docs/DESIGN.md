@@ -57,7 +57,9 @@ current design; the history of changes is in the version control log.
 * After load, undo and redo the lines and the camera in the file agree: the
   signatures are dropped and the first depsgraph update takes them again
   without re-aiming. They are not taken in the load / undo handler itself,
-  because the camera's world matrix is evaluated only after it.
+  because the camera's world matrix is evaluated only after it. Errors are not
+  saved, so that first look also solves the lines without writing anything:
+  lines saved (or undone) while impossible show their error at once.
 * An impossible configuration (e.g. both vanishing points on one side of the
   principal point) keeps the camera in its last good state; the lines, and the
   principal point, stay where they were put, and the camera follows again as

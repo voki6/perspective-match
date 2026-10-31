@@ -3,7 +3,9 @@
 
 Lines that do not pass exactly through the camera's vanishing points are kept
 as they are: a third line of an axis (least squares) and the lines 1 Point
-does not use. Nothing may re-aim them after a load or an undo.
+does not use. Nothing may re-aim them after a load or an undo. Lines that
+were stored while impossible show their error again at once (errors are
+runtime only); good lines show none.
 
 Background only: it saves and opens files and uses undo.
     blender -b --factory-startup <empty.blend> --python-expr \
@@ -51,6 +53,10 @@ def stored():
             tuple(round(v, 6) for row in mw for v in row), round(cam().data.lens, 6))
 
 
+def errors():
+    return MOD.state.errors.get(CAM.key(cam()))
+
+
 def nudge(seg, dx, dy):
     seg.b = (seg.b[0] + dx, seg.b[1] + dy)
 
@@ -78,6 +84,7 @@ bpy.ops.wm.save_as_mainfile(filepath=path, copy=True)
 bpy.ops.wm.open_mainfile(filepath=path)
 update()
 checks['load_keeps_lines'] = stored() == before
+checks['load_no_false_error'] = not errors()
 # the camera still follows when it is changed after the load
 cam().rotation_euler.z += 0.05
 update()
@@ -97,6 +104,27 @@ checks['undo_keeps_lines'] = moved != before and stored() == before
 bpy.ops.ed.redo()
 update()
 checks['redo_keeps_lines'] = stored() == moved
+
+# --- lines saved while impossible: their error is shown again at once
+scene().perspective_match.mode = 'TWO_VP'
+x_good = CAM.lines_dict(pm())['X']
+CAM.write_lines(pm(), 'X', [((0.1, 0.5), (0.9, 0.5)), ((0.1, 0.6), (0.9, 0.6))])  # parallel
+bad = not CAM.solve_and_apply(cam(), scene()).ok
+bpy.ops.wm.save_as_mainfile(filepath=path, copy=True)
+bpy.ops.wm.open_mainfile(filepath=path)
+update()
+checks['load_shows_line_errors'] = bad and bool(errors())
+bpy.ops.ed.undo_push(message='loaded')
+CAM.write_lines(pm(), 'X', x_good)
+fixed = CAM.solve_and_apply(cam(), scene()).ok and not errors()
+update()
+bpy.ops.ed.undo_push(message='fixed')
+bpy.ops.ed.undo()                          # back to the impossible lines of the file
+update()
+checks['undo_shows_line_errors'] = fixed and bool(errors())
+bpy.ops.ed.redo()
+update()
+checks['redo_no_false_error'] = not errors()
 
 failed = [k for k, v in checks.items() if not v]
 result = dict(passed=not failed, failed=failed, checks=checks)

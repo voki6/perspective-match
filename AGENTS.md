@@ -268,7 +268,7 @@ through on a real ultra-wide photo; 0.05 is kept (refuse rather than be wrong).
 | `solver.py` | fSpy port: vanishing points (2+ lines, least squares), focal length, rotation, principal point modes (`CENTER`, `MANUAL`, `THIRD_VP`, `VERTICALS` — fSpy style, kept for parity tests, `LEVEL`), Blender camera mapping. No bpy. |
 | `model.py` | No bpy. `CamState` (aspect, f, pp, R world→camera, C), Blender ↔ state, `kept_axes`, `retarget_segment`, `build_segments` (box edges at the world origin, middle 60 %), `solve_lines`, `orient_axes`, `place_camera` / `place_camera_in_view`, scale (`scale_measure`, `scale_tip`, `apply_scale`), `signatures_equal` |
 | `props.py` | `PM_Segment`, `PM_CameraLines` (on Camera data), `PM_ToolSettings` (on Scene) with update callbacks |
-| `camera.py` | Bridge Blender ↔ model. `active_camera(scene, started=False)` — THE way to get the add-on's camera. `key(obj)` — key for runtime dicts (object name). `solve_and_apply`, `sync_lines_from_camera`, `follow_camera`, `camera_picked`, `mode_switched`, photo / aspect helpers, `apply_photo_resolution`, `notify`, `override_warnings`, `one_redraw`, depsgraph / load / undo handlers |
+| `camera.py` | Bridge Blender ↔ model. `active_camera(scene, started=False)` — THE way to get the add-on's camera. `key(obj)` — key for runtime dicts (object name). `solve_and_apply`, `solve_lines` / `check_lines` (solve without writing), `sync_lines_from_camera`, `follow_camera`, `camera_picked`, `mode_switched`, photo / aspect helpers, `apply_photo_resolution`, `notify`, `override_warnings`, `one_redraw`, depsgraph / load / undo handlers |
 | `handles.py` | Handle keys: `('X'|'Y'|'Z', index, 'a'|'b')`, `('origin', 0, None)` and `('scale', 0, None)`; selection helpers (selection lives in `state.selection`) |
 | `keys.py` | Reads the user's own keymap: Node Editor (select all, box, move/rotate/scale), Transform Modal Map (confirm, cancel, axis, snap), exit key = the Edit Mode toggle (Tab). Defaults if missing |
 | `interact.py` | `EditCore` — the whole edit-mode state machine on plain `Ev` tuples (testable without a mouse). `PM_OT_edit` (`perspective_match.edit`) — thin modal wrapper: status bar, header, ends when the view leaves the camera, suspended (not ended) while something else is in front, key hints only while the mouse is over the edited view, `switch_to` another camera. `start_session` starts it after the "+" |
@@ -428,7 +428,9 @@ folder, import it as a package in background Blender and run
   must not hide the error of impossible lines.
 * Undo / redo / load: the file's lines and camera agree, nothing is re-aimed.
   `camera._on_reload` drops signatures, errors and selection; the first
-  depsgraph update takes the signature again (`follow_camera`, first look).
+  depsgraph update takes the signature again (`follow_camera`, first look)
+  and finds the errors with a solve that writes nothing (`camera.check_lines`),
+  so lines saved or undone while impossible show their error at once.
   Never take it in `load_post` / `undo_post`: `matrix_world` is not evaluated
   yet there (identity after a load, the camera before the undo after an undo),
   so the first update saw a "moved" camera and re-aimed every line — lines

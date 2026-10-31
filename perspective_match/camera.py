@@ -216,14 +216,24 @@ def origin_visible(cam_obj, scene):
     return M.origin_rel(current_state(cam_obj, scene)) is not None
 
 
-def write_state(cam_obj, scene, st):
-    """Write a camera state into Blender. Returns an error message or None."""
+def blender_values(cam_obj, st):
+    """(Blender values of a camera state, error message or None when Blender
+    cannot take them)."""
     cd = cam_obj.data
     b = M.blender_settings(st, cd.sensor_fit, cd.sensor_width, cd.sensor_height)
     if not all(math.isfinite(v) for v in (b['lens'], b['shift_x'], b['shift_y'])):
-        return 'invalid result'
+        return b, 'invalid result'
     if not (LENS_RANGE[0] <= b['lens'] <= LENS_RANGE[1]):
-        return f'focal length {b["lens"]:.2f} mm is outside what Blender supports'
+        return b, f'focal length {b["lens"]:.2f} mm is outside what Blender supports'
+    return b, None
+
+
+def write_state(cam_obj, scene, st):
+    """Write a camera state into Blender. Returns an error message or None."""
+    cd = cam_obj.data
+    b, msg = blender_values(cam_obj, st)
+    if msg:
+        return msg
     if cd.type != 'PERSP':
         cd.type = 'PERSP'
     if abs(cd.lens - b['lens']) > 1e-7:
@@ -341,6 +351,34 @@ def sync_lines_from_camera(cam_obj, scene, axes=P.AXES, origin=True):
     changed()
 
 
+def solve_lines(cam_obj, scene, cur, pp=None, origin_moved=False, reset_shift=False):
+    """model.solve_lines for the stored lines in the scene's mode; nothing is
+    written. Returns (origin point, or None when the world origin is not in
+    front of the camera, result)."""
+    pm = settings_of(cam_obj.data)
+    tool = tool_of(scene)
+    origin = tuple(pm.origin) if M.origin_rel(cur) is not None else None
+    res = M.solve_lines(lines_dict(pm), origin, tool.mode, tool.vp1_axis, tool.vp2_axis, cur,
+                        origin_moved=origin_moved and origin is not None,
+                        reset_shift=reset_shift, pp=pp, scale=scale_settings(pm))
+    return origin, res
+
+
+def check_lines(cam_obj, scene):
+    """Find the errors of the lines as they are, writing nothing: after a load
+    or an undo they are not known (errors are runtime only), and lines saved
+    while impossible must show their error before they are touched."""
+    _origin, res = solve_lines(cam_obj, scene, current_state(cam_obj, scene))
+    msg = blender_values(cam_obj, res.state)[1] if res.ok else None
+    k = key(cam_obj)
+    if not res.ok or msg:
+        state.errors[k] = res.errors if not res.ok else [msg]
+    else:
+        state.errors.pop(k, None)
+        state.warnings[k] = res.warnings
+    changed()
+
+
 def mode_switched(scene):
     """A new mode starts without shift (except 3 Points, which computes it):
     the camera is solved from the lines with the principal point at the centre."""
@@ -360,7 +398,6 @@ def solve_and_apply(cam_obj, scene, origin_moved=False, reset_shift=False, pp_re
     pm = settings_of(cam_obj.data)
     tool = tool_of(scene)
     cur = current_state(cam_obj, scene)
-    origin = tuple(pm.origin) if M.origin_rel(cur) is not None else None
     k = key(cam_obj)
     if reset_shift or not principal_point_editable(tool):
         pp = M.CENTRE if reset_shift else None
@@ -370,9 +407,7 @@ def solve_and_apply(cam_obj, scene, origin_moved=False, reset_shift=False, pp_re
             pp = (pp[0], cur.pp[1])
     else:
         pp = state.pending_pp.get(k)
-    res = M.solve_lines(lines_dict(pm), origin, tool.mode, tool.vp1_axis, tool.vp2_axis, cur,
-                        origin_moved=origin_moved and origin is not None,
-                        reset_shift=reset_shift, pp=pp, scale=scale_settings(pm))
+    origin, res = solve_lines(cam_obj, scene, cur, pp, origin_moved, reset_shift)
     err = None if res.ok else res.errors
     if res.ok:
         msg = write_state(cam_obj, scene, res.state)
@@ -707,7 +742,10 @@ def follow_camera(cam, scene):
     sig = signature(cam, scene)
     known = state.signatures.get(key(cam))
     if known is None:
-        state.signatures[key(cam)] = sig          # first look: lines and camera agree
+        # first look (picked, loaded, undone): the lines and the camera belong
+        # together; whether the lines can be solved is not known yet
+        state.signatures[key(cam)] = sig
+        check_lines(cam, scene)
         return
     if M.signatures_equal(sig, known):
         return
