@@ -81,7 +81,11 @@ come from the lines and the camera updates immediately.
    switched (`reset_shift=True`); kept as it is while lines are moved.
    See the modes table in §5.
 7. **1 Point mode does not touch the lines of the other axes**, so they are
-   still in place when switching back to another mode.
+   still in place when switching back to another mode. **Parallel Verticals
+   never touches the Z lines** (neither its solves nor camera changes,
+   `model.kept_axes`): aimed at its level camera they would be exactly
+   parallel, and 2 Points XZ / YZ, 3 Points or 1 Point on Z could not solve
+   them after switching back.
 8. **Parallel Verticals = level camera**: Rotation X exactly 90°, Y exactly 0°.
 9. Dragging the **origin point** moves the camera in its own image plane
    (rotation and focal length stay). Moving other lines keeps the camera's
@@ -262,7 +266,7 @@ through on a real ultra-wide photo; 0.05 is kept (refuse rather than be wrong).
 | `blender_manifest.toml` | extension manifest (id `perspective_match`, permission `files`, build excludes) |
 | `LICENSE` | GPL-3.0 text (shipped in the package; an identical copy in the repository root lets GitHub show the license) |
 | `solver.py` | fSpy port: vanishing points (2+ lines, least squares), focal length, rotation, principal point modes (`CENTER`, `MANUAL`, `THIRD_VP`, `VERTICALS` — fSpy style, kept for parity tests, `LEVEL`), Blender camera mapping. No bpy. |
-| `model.py` | No bpy. `CamState` (aspect, f, pp, R world→camera, C), Blender ↔ state, `retarget_segment`, `build_segments` (box edges at the world origin, middle 60 %), `solve_lines`, `orient_axes`, `place_camera` / `place_camera_in_view`, scale (`scale_measure`, `scale_tip`, `apply_scale`), `signatures_equal` |
+| `model.py` | No bpy. `CamState` (aspect, f, pp, R world→camera, C), Blender ↔ state, `kept_axes`, `retarget_segment`, `build_segments` (box edges at the world origin, middle 60 %), `solve_lines`, `orient_axes`, `place_camera` / `place_camera_in_view`, scale (`scale_measure`, `scale_tip`, `apply_scale`), `signatures_equal` |
 | `props.py` | `PM_Segment`, `PM_CameraLines` (on Camera data), `PM_ToolSettings` (on Scene) with update callbacks |
 | `camera.py` | Bridge Blender ↔ model. `active_camera(scene, started=False)` — THE way to get the add-on's camera. `key(obj)` — key for runtime dicts (object name). `solve_and_apply`, `sync_lines_from_camera`, `follow_camera`, `camera_picked`, `mode_switched`, photo / aspect helpers, `apply_photo_resolution`, `notify`, `override_warnings`, `one_redraw`, depsgraph / load / undo handlers |
 | `handles.py` | Handle keys: `('X'|'Y'|'Z', index, 'a'|'b')`, `('origin', 0, None)` and `('scale', 0, None)`; selection helpers (selection lives in `state.selection`) |
@@ -420,10 +424,7 @@ folder, import it as a package in background Blender and run
 
 ## 11. Roadmap / open items
 
-1. Manual check of Parallel Verticals on real photos: drag lines, slide the
-   principal point along the horizon, see that verticals stay straight.
-   Shortcuts, snapping and the look of points and lines are checked by hand;
-   the mode's maths and behaviour are covered by the tests.
+1. Manual testing: shortcuts, snapping, the look of points and lines.
 2. Extensions platform: icon, featured image and screenshots are still to be
    made; listing text is in `docs/EXTENSIONS_LISTING.md`.
 3. `api.py` on top of `model` / `camera` (e.g.

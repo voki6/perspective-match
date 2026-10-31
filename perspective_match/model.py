@@ -109,6 +109,15 @@ def used_axes(mode, a1, a2):
     return [a1, a2]
 
 
+def kept_axes(mode):
+    """Axes whose lines are never re-aimed at the camera in this mode (neither
+    after a solve nor when the camera changes): Parallel Verticals assumes the
+    verticals parallel, so aiming the hidden Z lines at its level camera would
+    make them exactly parallel and a later mode that solves Z (2 Points XZ / YZ,
+    3 Points, 1 Point on Z) could not use them."""
+    return ('Z',) if mode == 'VERTICALS' else ()
+
+
 # --------------------------------------------------------------------------
 # Camera state
 # --------------------------------------------------------------------------

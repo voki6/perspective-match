@@ -379,6 +379,34 @@ def run():
         checks['one_point_keeps_other_lines'] = (res1.ok and kept_in_one
                                                  and CAM.lines_dict(pm)['Y'] == y_before)
 
+        # Parallel Verticals leaves the Z lines alone (its level camera would make
+        # them parallel): back in 2 Points XZ the camera is solved again, tilted
+        pm.z_lines[0].a, pm.z_lines[0].b = CORNER['0,0,0'], CORNER['0,0,1']
+        pm.z_lines[1].a, pm.z_lines[1].b = CORNER['1,0,0'], CORNER['1,0,1']
+        tool.directions = 'XZ'
+        res_xz = CAM.solve_and_apply(cam, scene, reset_shift=True)
+        update(scene)
+        tilt_before = abs(math.degrees(cam.matrix_world.to_euler('XYZ').x) - 90.0)
+        z_before = CAM.lines_dict(pm)['Z']
+        tool.mode = 'VERTICALS'
+        update(scene)
+        z_kept = CAM.lines_dict(pm)['Z'] == z_before
+        seg = pm.x_lines[0]
+        seg.b = (seg.b[0] + 0.004, seg.b[1] - 0.003)
+        res_pv = CAM.solve_and_apply(cam, scene)
+        update(scene)
+        cam.location.x += 0.3                      # by hand: the camera stays level
+        update(scene)
+        z_kept = z_kept and CAM.lines_dict(pm)['Z'] == z_before
+        tool.mode = 'TWO_VP'
+        update(scene)
+        tilt = abs(math.degrees(cam.matrix_world.to_euler('XYZ').x) - 90.0)
+        checks['verticals_keep_z_lines'] = (res_xz.ok and res_pv.ok and z_kept
+                                            and CAM.key(cam) not in MOD.state.errors
+                                            and tilt_before > 2.0 and abs(tilt - tilt_before) < 1.0)
+        tool.directions = 'XY'
+        update(scene)
+
         # every mode: first touch does not jump (VERTICALS only if no tilt)
         jumps = {}
         for mode in ('TWO_VP', 'ONE_VP', 'THIRD_VP'):

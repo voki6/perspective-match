@@ -63,6 +63,11 @@ current design; the history of changes is in the version control log.
 * Lines of the axes that the mode does not use are re-aimed at the solved
   camera — except in 1 Point, which leaves them alone so they are still in
   place when switching back to another mode.
+* Parallel Verticals never re-aims the Z lines, after a solve or when the
+  camera changes. The mode assumes the verticals are parallel; aimed at its
+  level camera, the Z lines would become exactly parallel, the convergence
+  measured on the photo would be lost, and a mode that solves Z (2 Points XZ /
+  YZ, 3 Points) would fail after switching back.
 
 ## Modes and lens shift
 

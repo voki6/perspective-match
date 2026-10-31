@@ -392,9 +392,11 @@ def solve_and_apply(cam_obj, scene, origin_moved=False, reset_shift=False, pp_re
     # Lines that were not inputs of this solve follow the new camera; so does the
     # origin point when the camera could not be placed on it. In 1 Point mode
     # the other axes keep their lines where they are, so that going back to a
-    # mode that uses them finds them as the user left them.
+    # mode that uses them finds them as the user left them; so do the kept axes.
     used = set(M.used_axes(tool.mode, tool.vp1_axis, tool.vp2_axis))
-    rest = [] if tool.mode == 'ONE_VP' else [a for a in P.AXES if a not in used]
+    kept = M.kept_axes(tool.mode)
+    rest = [] if tool.mode == 'ONE_VP' else [a for a in P.AXES
+                                             if a not in used and a not in kept]
     sync_lines_from_camera(cam_obj, scene, axes=rest,
                            origin=origin is None or res.origin_follows)
     return res
@@ -706,7 +708,8 @@ def follow_camera(cam, scene):
         return
     _busy = True
     try:
-        sync_lines_from_camera(cam, scene)
+        kept = M.kept_axes(tool_of(scene).mode)
+        sync_lines_from_camera(cam, scene, axes=[a for a in P.AXES if a not in kept])
     finally:
         _busy = False
 
