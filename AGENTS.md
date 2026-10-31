@@ -67,7 +67,8 @@ come from the lines and the camera updates immediately.
    (`state.py`).
 3. **The add-on is off until a camera is picked** in the Camera field of the
    panel (a plain object field, not `template_ID`). Picking starts it (lines
-   built, scene camera set, view through it, render size from the photo).
+   built, scene camera set, view through it, render size from the photo; in
+   Parallel Verticals the camera is solved and so levelled at once).
    Clearing the field switches everything off: all handlers return at once
    while `state.active` is False.
 4. **Render resolution changes only on explicit actions** (Set Up from Photo,
@@ -82,11 +83,14 @@ come from the lines and the camera updates immediately.
    See the modes table in §5.
 7. **1 Point mode does not touch the lines of the other axes**, so they are
    still in place when switching back to another mode. **Parallel Verticals
-   never touches the Z lines** (neither its solves nor camera changes,
-   `model.kept_axes`): aimed at its level camera they would be exactly
+   never touches the Z lines** (neither its solves nor camera changes:
+   `model.kept_axes`, left out by `camera.sync_lines_from_camera` unless the
+   caller names the axes): aimed at its level camera they would be exactly
    parallel, and 2 Points XZ / YZ, 3 Points or 1 Point on Z could not solve
    them after switching back.
-8. **Parallel Verticals = level camera**: Rotation X exactly 90°, Y exactly 0°.
+8. **Parallel Verticals = level camera**: Rotation X exactly 90°, Y exactly 0°,
+   also right after a camera is picked or made with "+" in this mode (no jump
+   at the first touch).
 9. Dragging the **origin point** moves the camera in its own image plane
    (rotation and focal length stay). Moving other lines keeps the camera's
    **distance to the world origin** and the origin at the origin point

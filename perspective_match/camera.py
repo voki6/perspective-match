@@ -322,13 +322,17 @@ def clear_lines(cam_obj):
     changed()
 
 
-def sync_lines_from_camera(cam_obj, scene, axes=P.AXES, origin=True):
+def sync_lines_from_camera(cam_obj, scene, axes=None, origin=True):
     """camera -> lines: re-aim the stored lines at the camera's vanishing points
-    (and move the origin point onto the projected world origin)."""
+    (and move the origin point onto the projected world origin). axes: which
+    lines; by default all but those the mode keeps (model.kept_axes)."""
     pm = settings_of(cam_obj.data)
     if not pm.started:
         ensure_lines(cam_obj, scene)
         return
+    tool = tool_of(scene)
+    if axes is None:
+        axes = [a for a in P.AXES if a not in M.kept_axes(tool.mode)]
     st = current_state(cam_obj, scene)
     current = lines_dict(pm)
     for axis in axes:
@@ -345,7 +349,6 @@ def sync_lines_from_camera(cam_obj, scene, axes=P.AXES, origin=True):
     remember(cam_obj, scene)
     # the errors are gone only when the lines the mode solves from now agree
     # with the camera (not when e.g. only the origin point followed it)
-    tool = tool_of(scene)
     if set(M.used_axes(tool.mode, tool.vp1_axis, tool.vp2_axis)) <= set(axes):
         forget_errors(cam_obj)
     changed()
@@ -626,6 +629,11 @@ def camera_picked(scene, context):
                 follow_camera(cam, scene)        # it may have moved while not picked
             else:
                 ensure_lines(cam, scene)
+            if tool_of(scene).mode == 'VERTICALS':
+                # the lines are a picture of the camera, but this mode also makes
+                # it level: now, as switching to the mode does, not at the first
+                # touch of a line
+                solve_and_apply(cam, scene)
             area = getattr(context, 'area', None) if context else None
             if area is not None and area.type == 'VIEW_3D':
                 rv3d = area.spaces.active.region_3d
@@ -751,8 +759,7 @@ def follow_camera(cam, scene):
         return
     _busy = True
     try:
-        kept = M.kept_axes(tool_of(scene).mode)
-        sync_lines_from_camera(cam, scene, axes=[a for a in P.AXES if a not in kept])
+        sync_lines_from_camera(cam, scene)
     finally:
         _busy = False
 

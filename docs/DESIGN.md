@@ -84,7 +84,9 @@ current design; the history of changes is in the version control log.
 * **Parallel Verticals is a level camera**: Rotation X exactly 90°, Y exactly
   0°. The horizon is fitted to all lines of both horizontal axes at once, so
   the two vanishing points lie on one horizontal line; Shift Y does the tilt.
-  The solver's original "verticals" principal point mode stays for the parity
+  A camera picked (or made with "+") while this mode is on is solved at once,
+  so it is level before the first touch of a line, as after switching to the
+  mode. The solver's original "verticals" principal point mode stays for the parity
   tests but is not used.
 * The axis fields show only what the mode needs: 2 Points — one Directions
   field (XY / XZ / YZ), 1 Point — one Axis field, 3 Points and Parallel

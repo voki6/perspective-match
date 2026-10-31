@@ -500,6 +500,22 @@ def run():
                                              tool.camera == scene.camera and
                                              abs(scene.camera.matrix_world.translation.z - 1600.0) < 1e-3)
         scene.unit_settings.scale_length = 1.0
+        # Parallel Verticals: a new camera ("+") is level at once, not at the first
+        # touch of a line; its Z lines are kept (they still converge)
+        tool.mode = 'VERTICALS'
+        r = bpy.ops.perspective_match.setup_from_image(
+            filepath=os.path.join(HERE, 'data', 'synthetic_box.png'), new_camera=True)
+        cam3 = scene.camera
+        e = cam3.matrix_world.to_euler('XYZ')
+        (za, zb), (zc, zd) = CAM.lines_dict(cam3.data.perspective_match)['Z']
+        converge = abs((zb[0] - za[0]) * (zd[1] - zc[1]) - (zb[1] - za[1]) * (zd[0] - zc[0])) > 1e-6
+        before = cam_tuple(cam3)
+        res = CAM.solve_and_apply(cam3, scene)
+        checks['verticals_new_camera_level'] = (
+            r == {'FINISHED'} and abs(math.degrees(e.x) - 90.0) < 1e-4
+            and abs(math.degrees(e.y)) < 1e-4 and converge
+            and res.ok and cam_close(cam_tuple(cam3), before, 1e-6))
+        tool.mode = 'TWO_VP'
         tool.camera = cam
         update(scene)
 
