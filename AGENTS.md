@@ -420,8 +420,10 @@ folder, import it as a package in background Blender and run
 
 ## 11. Roadmap / open items
 
-1. Manual testing: shortcuts, snapping, the look of points and
-   lines, Parallel Verticals on real photos.
+1. Manual check of Parallel Verticals on real photos: drag lines, slide the
+   principal point along the horizon, see that verticals stay straight.
+   Shortcuts, snapping and the look of points and lines are checked by hand;
+   the mode's maths and behaviour are covered by the tests.
 2. Extensions platform: icon, featured image and screenshots are still to be
    made; listing text is in `docs/EXTENSIONS_LISTING.md`.
 3. `api.py` on top of `model` / `camera` (e.g.
