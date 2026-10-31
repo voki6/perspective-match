@@ -9,8 +9,9 @@ lines -> camera   solve_and_apply(): while the lines are edited.
 Loop guard: after either direction the camera "signature" is remembered (runtime
 only, state.signatures). The handler re-aims the lines only when the camera no
 longer matches it, so a camera written by the add-on never moves the lines.
-After loading a file, undo or redo the stored lines and camera belong together,
-so the signature is just taken again.
+After loading a file, undo or redo the stored lines and camera belong together:
+the signature is dropped, and the first depsgraph update takes it again without
+re-aiming (only then is the camera's matrix_world evaluated).
 
 Performance: every handler returns at once while no camera is picked
 (state.active), and the overlay is rebuilt only when state.version changes.
@@ -727,18 +728,16 @@ def _on_depsgraph(scene, _depsgraph=None):
 @bpy.app.handlers.persistent
 def _on_reload(*_args):
     """After loading a file, undo or redo, the lines and the camera stored in it
-    belong together: take the signatures again instead of re-aiming."""
+    belong together: the signatures are dropped and the first depsgraph update
+    takes them again (follow_camera: first look) instead of re-aiming. They
+    cannot be taken here: matrix_world is not evaluated yet (identity after
+    loading a file, the camera before the undo after an undo)."""
     state.signatures.clear()
     state.errors.clear()
     state.pending_pp.clear()
     state.warnings.clear()
     state.selection.clear()
     update_active()
-    if state.active:
-        for scene in bpy.data.scenes:
-            cam = active_camera(scene)
-            if cam is not None and is_started(cam):
-                remember(cam, scene)
     changed()
 
 

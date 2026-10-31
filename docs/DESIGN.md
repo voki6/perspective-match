@@ -54,8 +54,10 @@ current design; the history of changes is in the version control log.
 * **Lines → camera**: dragging lines solves the camera and writes it, then
   remembers the new signature — so the handler does not re-aim the lines that
   were just moved, and the first touch of a line never makes the camera jump.
-* After load, undo and redo the signatures are simply taken again: the lines
-  and the camera in the file agree.
+* After load, undo and redo the lines and the camera in the file agree: the
+  signatures are dropped and the first depsgraph update takes them again
+  without re-aiming. They are not taken in the load / undo handler itself,
+  because the camera's world matrix is evaluated only after it.
 * An impossible configuration (e.g. both vanishing points on one side of the
   principal point) keeps the camera in its last good state; the lines, and the
   principal point, stay where they were put, and the camera follows again as

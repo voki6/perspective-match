@@ -318,9 +318,11 @@ python3 tests/make_detect_photos.py && python3 tests/test_detect.py   # needs Pi
 
 **In Blender, without touching the user's session** — a separate background
 process. The scripts load the add-on themselves from the project folder (via
-`tests/dev_load.py`, nothing is installed). `blender_architecture.py` and
-`blender_edit_core.py` print one line `PMRESULT{json}` with `passed` and
-`failed`; `blender_roundtrip.py` prints a dict with `passed`:
+`tests/dev_load.py`, nothing is installed). `blender_architecture.py`,
+`blender_edit_core.py` and `blender_reload.py` print one line `PMRESULT{json}`
+with `passed` and `failed`; `blender_roundtrip.py` prints a dict with `passed`.
+`blender_reload.py` opens files and uses undo: background only (it refuses
+to run in an open Blender):
 ```
 # once: an empty file (avoids loading the startup scene's data)
 blender -b --python-expr "import bpy; bpy.data.libraries.write('/tmp/pm_empty.blend', set())"
@@ -330,6 +332,8 @@ blender -b --factory-startup /tmp/pm_empty.blend --python-expr \
   "import runpy; runpy.run_path('tests/blender_edit_core.py')"
 blender -b --factory-startup /tmp/pm_empty.blend --python-expr \
   "import runpy; runpy.run_path('tests/blender_roundtrip.py')"      # 540 camera setups
+blender -b --factory-startup /tmp/pm_empty.blend --python-expr \
+  "import runpy; runpy.run_path('tests/blender_reload.py')"         # load, undo, redo
 ```
 Use absolute paths if the working directory differs. On macOS `blender` is
 `/Applications/Blender.app/Contents/MacOS/Blender` (or `bpy.app.binary_path`
@@ -419,8 +423,14 @@ folder, import it as a package in background Blender and run
 * Keys sent by remote desktop control arrive in Blender with an empty type;
   keyboard paths are tested through `EditCore` with fake events.
 * The status bar updates only when `status_text_set` is called again.
-* Undo / redo / load: signatures, errors and selection are re-taken
-  (`camera._on_reload`), never re-aimed — the file's lines and camera agree.
+* Undo / redo / load: the file's lines and camera agree, nothing is re-aimed.
+  `camera._on_reload` drops signatures, errors and selection; the first
+  depsgraph update takes the signature again (`follow_camera`, first look).
+  Never take it in `load_post` / `undo_post`: `matrix_world` is not evaluated
+  yet there (identity after a load, the camera before the undo after an undo),
+  so the first update saw a "moved" camera and re-aimed every line — lines
+  1 Point keeps, extra lines (least squares) and Parallel Verticals lines moved
+  (`tests/blender_reload.py`).
 
 ## 11. Roadmap / open items
 
