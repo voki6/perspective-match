@@ -1,0 +1,29 @@
+schema_version = "1.0.0"
+
+id = "perspective_match"
+version = "1.0.0"
+name = "Perspective Match"
+tagline = "Match a camera to a photo by drawing perspective lines"
+maintainer = "Kirill Volynkin"
+type = "add-on"
+
+tags = ["Camera", "3D View"]
+
+blender_version_min = "5.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = [
+  "2026 Kirill Volynkin",
+  "2018-2020 Per Gantelius (fSpy solver)",
+]
+
+[permissions]
+files = "Load the photo the camera is matched to"
+
+[build]
+paths_exclude_pattern = [
+  "__pycache__/",
+  "/.git/",
+  "/*.zip",
+  ".DS_Store",
+]

@@ -1,0 +1,231 @@
+{
+ "globalSettings": {
+  "calibrationMode": "TwoVanishingPoints",
+  "imageOpacity": 0.2,
+  "overlay3DGuide": "None"
+ },
+ "calibrationSettingsBase": {
+  "referenceDistanceAxis": "xPositive",
+  "referenceDistance": 10,
+  "referenceDistanceUnit": "Yards",
+  "cameraData": {
+   "presetId": "canon_60d",
+   "customSensorWidth": 20,
+   "customSensorHeight": 10,
+   "presetData": {
+    "displayName": "Canon 60D",
+    "sensorWidth": 22.3,
+    "sensorHeight": 14.9
+   }
+  },
+  "firstVanishingPointAxis": "xNegative",
+  "secondVanishingPointAxis": "zNegative"
+ },
+ "calibrationSettings1VP": {
+  "principalPointMode": "Default",
+  "upAxis": "yPositive",
+  "horizonMode": "Manual",
+  "absoluteFocalLength": 24
+ },
+ "calibrationSettings2VP": {
+  "principalPointMode": "Default",
+  "quadModeEnabled": true
+ },
+ "controlPointsStateBase": {
+  "principalPoint": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "origin": {
+   "x": 0.2982314684639093,
+   "y": 0.34680347687979696
+  },
+  "referenceDistanceAnchor": {
+   "x": 0.2982314684639093,
+   "y": 0.34680347687979696
+  },
+  "referenceDistanceHandleOffsets": [
+   -0.23526820683891336,
+   -0.3066384881137433
+  ],
+  "firstVanishingPoint": {
+   "lineSegments": [
+    [
+     {
+      "x": 0.42601555503030025,
+      "y": 0.40415286833528946
+     },
+     {
+      "x": 0.9000365618654662,
+      "y": 0.5454031009322207
+     }
+    ],
+    [
+     {
+      "x": 0.41739415081491654,
+      "y": 0.04953202027892652
+     },
+     {
+      "x": 0.9507110122414305,
+      "y": 0.14287330297426987
+     }
+    ]
+   ]
+  }
+ },
+ "controlPointsState1VP": {
+  "horizon": {
+   "0": {
+    "x": 0.5118334950496416,
+    "y": 0.5508268225274652
+   },
+   "1": {
+    "x": 0.7154622250631155,
+    "y": 0.8255648191153278
+   }
+  }
+ },
+ "controlPointsState2VP": {
+  "secondVanishingPoint": {
+   "lineSegments": [
+    [
+     {
+      "x": 0.9172152342530506,
+      "y": 0.4082780302620597
+     },
+     {
+      "x": 0.9480780284454208,
+      "y": 0.16349931327560732
+     }
+    ],
+    [
+     {
+      "x": 0.2569948727351605,
+      "y": 0.03775924569203336
+     },
+     {
+      "x": 0.2713070131097316,
+      "y": 0.2613996034325672
+     }
+    ]
+   ]
+  },
+  "thirdVanishingPoint": {
+   "lineSegments": [
+    [
+     {
+      "x": 0.27460364961614336,
+      "y": 0.3697670902400505
+     },
+     {
+      "x": 0.034850686400703726,
+      "y": 0.6025881122656513
+     }
+    ],
+    [
+     {
+      "x": 0.5599874891798862,
+      "y": 0.7298908694518256
+     },
+     {
+      "x": 0.46349688070409634,
+      "y": 0.943814342052108
+     }
+    ]
+   ]
+  }
+ },
+ "cameraParameters": {
+  "principalPoint": {
+   "x": 0,
+   "y": 0
+  },
+  "viewTransform": {
+   "rows": [
+    [
+     0.9116550277351482,
+     0.41094977125381343,
+     -0.0023229101714609154,
+     -29.96556742690798
+    ],
+    [
+     -0.19633221953892094,
+     0.44049708753502287,
+     0.876022816737146,
+     15.167944205429542
+    ],
+    [
+     0.36102461131638547,
+     -0.798174543179373,
+     0.48226406526326626,
+     -173.2452409664286
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ]
+  },
+  "cameraTransform": {
+   "rows": [
+    [
+     0.9116550277351483,
+     -0.19633221953892097,
+     0.3610246113163856,
+     92.84201213769019
+    ],
+    [
+     0.41094977125381354,
+     0.440497087535023,
+     -0.7981745431793732,
+     -132.64703323318645
+    ],
+    [
+     -0.0023229101714608573,
+     0.8760228167371462,
+     0.48226406526326643,
+     70.19288166766222
+    ],
+    [
+     0,
+     0,
+     0,
+     1
+    ]
+   ]
+  },
+  "horizontalFieldOfView": 0.8098745307314665,
+  "verticalFieldOfView": 0.5566656780878579,
+  "vanishingPoints": [
+   {
+    "x": -5.891365385593294,
+    "y": 1.2687527705977109
+   },
+   {
+    "x": 0.011237501153991802,
+    "y": -4.237919974243164
+   },
+   {
+    "x": 1.2011938696384563,
+    "y": 1.2875597899137508
+   }
+  ],
+  "vanishingPointAxes": [
+   "xNegative",
+   "zNegative",
+   "yNegative"
+  ],
+  "relativeFocalLength": 2.333040277023006,
+  "imageWidth": 5184,
+  "imageHeight": 3456
+ },
+ "resultDisplaySettings": {
+  "orientationFormat": "AxisAngleDegrees",
+  "principalPointFormat": "Absolute",
+  "fieldOfViewFormat": "Degrees",
+  "displayAbsoluteFocalLength": true
+ },
+ "_source": "fSpy test_data/ref_distance_in_yards.fspy (https://github.com/stuffmatic/fSpy, GPL-3.0), project state only, image removed"
+}
