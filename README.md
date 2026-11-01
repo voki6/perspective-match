@@ -1,4 +1,4 @@
-# Perspective Match
+# <img src="docs/media/icon.png" width="48" height="48" alt="" align="top"> Perspective Match
 
 ![Perspective Match: perspective lines over a photo, the camera matched in Blender](docs/media/main.png)
 
