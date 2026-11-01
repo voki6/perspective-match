@@ -79,6 +79,7 @@ Source code, demo videos and issues: https://github.com/voki6/perspective-match
 
 * Icon: `docs/media/icon.png` (256 × 256, transparent corners; the source is
   `docs/media/icon.svg`).
-* Featured image: `docs/media/main.png` (1920 × 1080).
-* Screenshots: `docs/media/screenshot.png` (the Sidebar panel and the lines over
-  a photo in the camera view); more can be taken from the demo videos.
+* Featured image: `docs/media/main.jpg` (1920 × 1080).
+* Screenshots: `docs/media/screenshot.webp` (the Sidebar panel and the lines over
+  a photo in the camera view; WebP keeps the window's transparent corners);
+  more can be taken from the demo videos.

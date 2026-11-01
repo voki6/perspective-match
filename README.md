@@ -1,6 +1,6 @@
 # <img src="docs/media/icon.png" width="48" height="48" alt="" align="top"> Perspective Match
 
-![Perspective Match: perspective lines over a photo, the camera matched in Blender](docs/media/main.png)
+![Perspective Match: perspective lines over a photo, the camera matched in Blender](docs/media/main.jpg)
 
 A Blender extension that matches a camera to a photo. You draw perspective
 lines along edges in the photo (or, on suitable photos, let **Detect Lines**
@@ -38,7 +38,7 @@ https://github.com/user-attachments/assets/44eee286-f4f9-49c5-a26c-0ffcdd189306
 
 ## Quick start
 
-![The Perspective tab in Blender's Sidebar, the lines over a photo in the camera view](docs/media/screenshot.png)
+![The Perspective tab in Blender's Sidebar, the lines over a photo in the camera view](docs/media/screenshot.webp)
 
 1. Open the Sidebar in the 3D Viewport (**N**) ▸ **Perspective** tab.
 2. Click **+** next to the Camera field and pick a photo. A new camera gets the
