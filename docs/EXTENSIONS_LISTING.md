@@ -15,8 +15,9 @@ at least one screenshot, optionally a website / issue tracker link.
 ## Description (paste into the form, Markdown is supported)
 
 Match a Blender camera to a photo by drawing perspective lines along the edges
-you see in it, or let **Detect Lines** place them. The lines give the vanishing
-points, the camera is solved from them and updates live while you drag.
+you see in it, or, on suitable photos, let **Detect Lines** place them. The
+lines give the vanishing points, the camera is solved from them and updates
+live while you drag.
 
 **How it works**
 
@@ -27,9 +28,12 @@ points, the camera is solved from them and updates live while you drag.
   X, Y and Z axes. Drag the origin point to where the world origin should be.
 * The camera is the single source of truth: move or rotate the camera by hand
   and the lines follow it; drag the lines and the camera follows them.
-* **Detect Lines** finds straight edges on the photo, chooses the mode and
-  places two lines per direction. When the photo does not give a reliable
-  camera it changes nothing and says why.
+* **Detect Lines** (optional) finds straight edges on the photo, chooses the
+  mode and places two lines per direction. It works best on architecture with
+  long straight edges in two or more perpendicular directions (interiors,
+  buildings) and refuses on many other photos (nature, curved shapes, strong
+  lens distortion, clutter): then it changes nothing and says why, and you
+  place the lines by hand.
 * **Specify Scale**: give the real length of something along an axis from the
   origin; the camera's distance follows.
 

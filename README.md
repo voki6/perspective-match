@@ -3,7 +3,8 @@
 ![Perspective Match: perspective lines over a photo, the camera matched in Blender](docs/media/main.png)
 
 A Blender extension that matches a camera to a photo. You draw perspective
-lines along edges in the photo (or let **Detect Lines** find them), the
+lines along edges in the photo (or, on suitable photos, let **Detect Lines**
+find them), the
 vanishing points come from the lines, and the camera is solved from them —
 live, in the camera view, while you drag.
 
@@ -37,12 +38,15 @@ https://github.com/user-attachments/assets/44eee286-f4f9-49c5-a26c-0ffcdd189306
 
 ## Quick start
 
+![The Perspective tab in Blender's Sidebar, the lines over a photo in the camera view](docs/media/screenshot.png)
+
 1. Open the Sidebar in the 3D Viewport (**N**) ▸ **Perspective** tab.
 2. Click **+** next to the Camera field and pick a photo. A new camera gets the
    photo as its background, the render size is set to the photo size, and
    **Edit Perspective** starts.
-3. Click **Detect Lines** — or drag the ends of the lines onto edges in the
-   photo that run along the world X, Y and Z axes yourself.
+3. Drag the ends of the lines onto edges in the photo that run along the
+   world X, Y and Z axes — or, on a suitable photo, click **Detect Lines** to
+   place them (see below).
 4. Drag the origin point to where the world origin should be.
 5. Optional: open **Scale**, tick **Specify Scale** and drag the end of the
    measuring line to the end of something of known length.
@@ -64,9 +68,10 @@ Tab or Esc leaves Edit Perspective. Each edit is one undo step.
   / scale points with your familiar Blender shortcuts, axis constraints, Shift for precision,
   snapping to other points with the scene snapping toggle (Ctrl inverts it).
   Viewport navigation is never captured.
-* **Detect Lines** finds straight edges on the photo, chooses the mode itself
-  and places two lines per direction (easy to adjust by hand). When the photo
-  does not give a reliable camera it changes nothing and says why.
+* **Detect Lines** (optional) finds straight edges on the photo, chooses the
+  mode itself and places two lines per direction (easy to adjust by hand).
+  When the photo does not give a reliable camera it changes nothing and says
+  why.
 * **Specify Scale**: a known length along an axis from the origin sets the
   size of the world; the photo does not change.
 * **Extra lines** per direction for photos with many short edges (tiles,
@@ -78,16 +83,23 @@ Tab or Esc leaves Edit Perspective. Each edit is one undo step.
   camera's background image, the lines live on the camera data. Several
   cameras can each have their own match.
 
-### How good is Detect Lines?
+### Detect Lines is optional
+
+Detect Lines is a helper, not the main way of working: on many photos it
+refuses, and then you place the lines by hand. It works best on architecture —
+interiors and buildings with long, sharp, straight edges in at least two
+perpendicular directions (walls, window and door frames, floor tiles, ceiling
+grids), shot without strong lens distortion and with few large objects at other
+angles. It usually refuses on nature and organic shapes, curved architecture,
+photos with only one clear direction, strong wide-angle or fisheye distortion,
+blurry or low-contrast photos and cluttered scenes. When it answers, the lines
+can always be adjusted by hand.
 
 On the [York Urban Database](https://www.elderlab.yorku.ca/resources/york-urban-line-segment-database-information/)
 (102 photos with a calibrated camera and known directions) it answers on 84
 and refuses on 18. Of the answers, 98 % have the camera's directions within
-5° (median error 1.2°) and the median focal length error is 3.4 %.
-It needs straight edges in at least two perpendicular directions; strong lens
-distortion, curved architecture or photos with only one clear direction lead
-to a refusal rather than a wrong camera. The lines can always be adjusted by
-hand afterwards.
+5° (median error 1.2°) and the median focal length error is 3.4 %. When it
+is not sure, it refuses rather than give a wrong camera.
 
 ## Credits
 
