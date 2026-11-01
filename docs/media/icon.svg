@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Perspective Match icon: camera frame corners; inside, a box in two-point perspective on the horizon -->
+  <rect x="8" y="8" width="240" height="240" rx="48" fill="#2b2b2b"/>
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <g stroke="#ffffff" stroke-width="9">
+      <polyline points="36,76 36,46 68,46"/>
+      <polyline points="188,46 220,46 220,76"/>
+      <polyline points="36,180 36,210 68,210"/>
+      <polyline points="188,210 220,210 220,180"/>
+    </g>
+    <line x1="36" y1="120" x2="220" y2="120" stroke="#FFD959" stroke-width="4"/>
+    <g stroke-width="2.5" opacity="0.5">
+      <line x1="128" y1="80" x2="44" y2="120" stroke="#FF3352"/>
+      <line x1="128" y1="176" x2="44" y2="120" stroke="#FF3352"/>
+      <line x1="128" y1="80" x2="212" y2="120" stroke="#8BDC00"/>
+      <line x1="128" y1="176" x2="212" y2="120" stroke="#8BDC00"/>
+    </g>
+    <g stroke-width="9">
+      <line x1="128" y1="80" x2="80" y2="103" stroke="#FF3352"/>
+      <line x1="128" y1="176" x2="80" y2="144" stroke="#FF3352"/>
+      <line x1="128" y1="80" x2="176" y2="103" stroke="#8BDC00"/>
+      <line x1="128" y1="176" x2="176" y2="144" stroke="#8BDC00"/>
+      <line x1="80" y1="103" x2="80" y2="144" stroke="#2890FF"/>
+      <line x1="176" y1="103" x2="176" y2="144" stroke="#2890FF"/>
+      <line x1="128" y1="80" x2="128" y2="176" stroke="#2890FF"/>
+    </g>
+  </g>
+</svg>

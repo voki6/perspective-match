@@ -73,9 +73,10 @@ live while you drag.
 
 * **Files** – Load the photo the camera is matched to.
 
-## Images to prepare
+## Images
 
-* Icon: square PNG (256 × 256 works well).
-* Featured image: 16:9.
-* Screenshots: the lines over a photo in camera view, the Sidebar panel, and a
-  before / after of the matched scene.
+* Icon: `docs/media/icon.png` (256 × 256, transparent corners; the source is
+  `docs/media/icon.svg`).
+* Featured image: `docs/media/main.png` (1920 × 1080).
+* Screenshots: `docs/media/screenshot.png` (the Sidebar panel and the lines over
+  a photo in the camera view); more can be taken from the demo videos.
