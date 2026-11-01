@@ -1,5 +1,7 @@
 # Perspective Match
 
+![Perspective Match: perspective lines over a photo, the camera matched in Blender](docs/media/main.png)
+
 A Blender extension that matches a camera to a photo. You draw perspective
 lines along edges in the photo (or let **Detect Lines** find them), the
 vanishing points come from the lines, and the camera is solved from them —
