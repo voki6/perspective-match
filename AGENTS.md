@@ -457,8 +457,10 @@ folder, import it as a package in background Blender and run
 ## 11. Roadmap / open items
 
 1. Manual testing: shortcuts, snapping, the look of points and lines.
-2. Extensions platform: icon, featured image and screenshots are still to be
-   made; listing text is in `docs/EXTENSIONS_LISTING.md`.
+2. Extensions platform: the images are ready (`docs/media`: icon, featured
+   image, screenshot) and the listing text is in `docs/EXTENSIONS_LISTING.md`;
+   left: the upload with a Blender ID and the moderators' review. After it:
+   README "once it is published", and `website` in the manifest.
 3. `api.py` on top of `model` / `camera` (e.g.
    `set_lines(axis, segments, units='px')`, `solve()`, `get_state()`) so an AI
    can drive the matching.
