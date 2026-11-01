@@ -69,6 +69,8 @@ live while you drag.
   goals and the design and tested everything in Blender; Claude wrote the
   code, the tests and the documentation.
 
+Source code, demo videos and issues: https://github.com/voki6/perspective-match
+
 ## Permissions
 
 * **Files** – Load the photo the camera is matched to.
