@@ -2,16 +2,6 @@
 
 ![Perspective Match: perspective lines over a photo, the camera matched in Blender](docs/media/main.png)
 
-
-
-https://github.com/user-attachments/assets/5e6ba1b0-e439-4002-b4a7-c1470bf7dfab
-
-
-
-https://github.com/user-attachments/assets/44eee286-f4f9-49c5-a26c-0ffcdd189306
-
-
-
 A Blender extension that matches a camera to a photo. You draw perspective
 lines along edges in the photo (or let **Detect Lines** find them), the
 vanishing points come from the lines, and the camera is solved from them —
@@ -24,6 +14,18 @@ follows them.
 * Blender 5.2 or newer (tested on 5.2.1, macOS, Apple Metal)
 * License: GPL-3.0-or-later
 * No external dependencies
+
+## See it in action
+
+**Drawing the lines** — drag the ends of the lines onto edges in the photo; the
+camera follows while you drag.
+
+https://github.com/user-attachments/assets/5e6ba1b0-e439-4002-b4a7-c1470bf7dfab
+
+**Detect Lines and Scale** — one click finds the lines and chooses the mode; a
+known length sets the size of the scene.
+
+https://github.com/user-attachments/assets/44eee286-f4f9-49c5-a26c-0ffcdd189306
 
 ## Install
 
